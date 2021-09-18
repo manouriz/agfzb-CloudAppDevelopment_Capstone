@@ -9,6 +9,16 @@ from django.utils.timezone import now
 # - Description
 # - Any other fields you would like to include in car make model
 # - __str__ method to print a car make object
+# CarMake model
+class CarMake(models.Model):
+    name = models.CharField(null=False, max_length=30, default='Mercedes Benz')
+    description = models.CharField(max_length=1000)
+    country = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return "Name: " + self.name + "," + \
+               "Description: " + self.description + "," + \
+               "Country: " + self.country
 
 
 # <HINT> Create a Car Model model `class CarModel(models.Model):`:
@@ -19,7 +29,36 @@ from django.utils.timezone import now
 # - Year (DateField)
 # - Any other fields you would like to include in car model
 # - __str__ method to print a car make object
+# CarModel model
+class CarModel(models.Model):
+    name = models.CharField(null=False, max_length=30, default='Citroen C5')    
+    description = models.CharField(max_length=1000)
+    dealerId = models.IntegerField(default=0)
+    year = models.IntegerField(default=1990)
+    SEDAN = 'Sedan'
+    SUV = 'SUV'
+    WAGON = 'WAGON'
+    OTHERS = 'Others'
+    CARTYPE_CHOICES = [
+        (SEDAN, 'Sedan'),
+        (SUV, 'SUV'),
+        (WAGON, 'WAGON'),
+        (OTHERS, 'Others')
+    ]
+    carType = models.CharField(
+        null=False,
+        max_length=20,
+        choices=CARTYPE_CHOICES,
+        default=OTHERS
+    )
+    carMake = models.ForeignKey(CarMake, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return "Name: " + self.name + "," + \
+               "Description: " + self.description + "," + \
+               "Dealer ID: " + self.dealerId + "," + \
+               "Year: " + self.year + "," + \
+               "Car Type: " + self.carType
 
 # <HINT> Create a plain Python class `CarDealer` to hold dealer data
 
