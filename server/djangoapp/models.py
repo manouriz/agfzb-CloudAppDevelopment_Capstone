@@ -88,3 +88,30 @@ class CarDealer:
 
 
 # <HINT> Create a plain Python class `DealerReview` to hold review data
+class DealerReview(models.Model):
+    id = models.AutoField(primary_key=True)
+    #dealership = models.ForeignKey(CarDealer, on_delete=models.CASCADE)
+    dealership = models.IntegerField(default=0)
+    name = models.CharField(max_length=1000)
+    purchase = models.BooleanField()
+    review = models.CharField(max_length=1000)
+    purchase_date = models.CharField(max_length=1000)
+    car_make = models.CharField(max_length=1000)
+    car_model = models.CharField(max_length=1000)
+    car_year = models.IntegerField(default=1990)
+    
+    POSITIVE = 'positive'
+    NEUTRAL = 'neutral'
+    NEGATIVE = 'negative'    
+    SENTIMENT_CHOICES = [
+        (POSITIVE, 'positive'),
+        (NEUTRAL, 'neutral'),
+        (NEGATIVE, 'negative')
+    ]
+    sentiment = models.CharField(
+        null=False,
+        max_length=20,
+        choices=SENTIMENT_CHOICES,
+        default=NEUTRAL
+    )
+
