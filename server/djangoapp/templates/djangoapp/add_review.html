@@ -11,6 +11,45 @@
 
 </head>
     <body>
-    <!--Add review form here -->
+        <!--Add review form here -->
+        <form action="{% url 'djangoapp:add_review' dealer_id %}" method="post">
+            <div class="container"> <!--Style root div with .container class -->
+                {% csrf_token %}
+                <h1>Add a review about <b>{{dealer_name}}</b> dealership</h1>
+                <hr>
+                <div class="form-group"> <!--Style second div with .form-group class -->
+                    <label for="content"><b>Enter your Review Content</b></label>
+                    <textarea class="form-control" id="content" name="content" rows="2" required placeholder="Enter your review here..."></textarea>
+                </div>
+                <div class="form-group">
+                    <input class="form-control-checkbox" type="checkbox" name="purchasecheck" id="purchasecheck">
+                    <label for="purchasecheck"><b>Is Purchased</b></label>
+                </div>
+                <div class="form-group">
+                    <label for="car"><b>Select your car</b>(Model-Make-Year)</label>
+                    <select name="car" id="car" class="form-control" required>
+                        {% for car in cars %}
+                            <option selected value={{car.id}}>{{car.name}}-{{car.make.name}}-{{ car.year|date:"Y" }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="purchasedate"><b>Purchase date</b></label>
+                    <input class="date-own form-control" type="text" name="purchasedate" id="purchasedate">
+                </div>
+                    {% if message %}
+                    <div class="alert alert-warning"> <!--Style the message paragraph with .alert and .alert-warning class -->
+                        {{ message }}
+                    </div>
+                    {% endif %}
+                    <button class="btn btn-primary" type="submit">Sign up</button> <!--Style button with .btn and .btn-primary class -->
+                </div>
+            </div>
+        </form>    
     </body>
+    <script type="text/javascript">
+        $('.date-own').datepicker({
+            format: 'mm/dd/yyyy'
+        });
+    </script>    
 </html>
