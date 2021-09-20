@@ -20,6 +20,10 @@
             background-color: #f5f5f5;
             text-align: center;
         }    
+        .navbar-brand:hover{
+            text-decoration: underline;
+            color: blue;
+        }
     </style>
 </head>
 
@@ -29,7 +33,7 @@
             <nav class="navbar navbar-light bg-light">
                 <div class="container-fluid">
                     <div class="navbar-header">
-                        <a class="navbar-brand" href="template/">Template...</a>
+                        <a class="navbar-brand" href="/djangoapp">Home</a>
                         <a class="navbar-brand" href="about/">About Us</a>
                         <a class="navbar-brand" href="contact/">Contact Us</a>
                     </div>                        
@@ -45,7 +49,7 @@
                                 {% csrf_token %}
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Username" name="username" >
-                                    <input type="password" class="form-control" placeholder="Username" name="psw" >
+                                    <input type="password" class="form-control" placeholder="Password" name="psw" >
                                     <button class="btn btn-primary" type="submit">Login</button>
                                     <a class="btn btn-link" href="{% url 'djangoapp:registration' %}">Sign Up</a>
                                 </div>
@@ -82,10 +86,6 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <h3>
-                Try it...
-            </h3>
-
         </div>
         <footer class="footer">
             <div class="container">
