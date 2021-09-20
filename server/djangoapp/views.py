@@ -9,6 +9,7 @@ from django.contrib import messages
 from datetime import datetime
 import logging
 import json
+from .models import CarModel
 
 
 # Get an instance of a logger
@@ -101,29 +102,36 @@ def add_review(request, dealer_id):
     user = request.user
     if user.is_authenticated:        
         if request.method == 'GET':
-            url = "https://176f6788.eu-de.apigw.appdomain.cloud/api/dealership"
-            cars = get_dealer_by_id_from_cf(url,dealer_id)
+            cars = CarModel.objects.filter(dealerId=dealer_id)
             context['cars'] = cars
+            #print("> Cars: ", cars)
             return render(request, 'djangoapp/add_review.html', context)
 
         elif request.method == 'POST':
-            url = "https://176f6788.eu-de.apigw.appdomain.cloud/api/review"        
+            car = get_object_or_404(CarModel, pk=request.POST["car"])
+            is_purchased = False
+            if "purchasecheck" in request.POST:
+                is_purchased = True if request.POST["purchasecheck"] == "on" else False
+                
             payload = json.dumps({
             "review": {
-                "id": 1116,
-                "name": "Alphread Hichkak",
-                "dealership": 15,
-                "review": "This was not a great car dealer!",
-                "purchase": False,
+                "id": 0,
+                "name": user.username,
+                "dealership": dealer_id,
+                "review": request.POST["content"],
+                "purchase": is_purchased,
                 "another": "field",
-                "purchase_date": "02/16/2021",
-                "car_make": "Audi",
-                "car_model": "Car",
-                "car_year": 2021                             
+                "purchase_date": request.POST["purchasedate"],
+                "car_make": car.carMake.name,
+                "car_model": car.name,
+                "car_year": car.year
             }
-            })        
+            })
+            url = "https://176f6788.eu-de.apigw.appdomain.cloud/api/review"
             result = post_request(url,payload)
-            redirect("djangoapp:dealer_details", dealer_id=dealer_id)
+            print("> Result - POST Payload: ", result)
+            print("> REVIEW: ", payload)            
+            return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
     else:
         return HttpResponse({"error", "User not logged in!"})
 

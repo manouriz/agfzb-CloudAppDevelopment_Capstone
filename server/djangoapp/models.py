@@ -58,7 +58,8 @@ class CarModel(models.Model):
                "Description: " + self.description + "," + \
                "Dealer ID: " + str(self.dealerId) + "," + \
                "Year: " + str(self.year) + "," + \
-               "Car Type: " + str(self.carType)
+               "Car Type: " + str(self.carType) + "," + \
+               "Car Make: " + str(self.carMake)
 
 # <HINT> Create a plain Python class `CarDealer` to hold dealer data
 class CarDealer:
